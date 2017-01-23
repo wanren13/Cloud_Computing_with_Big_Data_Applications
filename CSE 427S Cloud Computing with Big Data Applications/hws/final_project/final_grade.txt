@@ -1,0 +1,36 @@
+milestone 1:
+
+10/10
+
+_________________________
+milestone 2:
+
+15/15
+
+_________________________
+implementation:
+(grader: Xuting)
+(email: tang.xuting@wustl.edu)
+
+30/30
+
+_________________________
+results:
+(grader: Marion)
+(email: m.neumann@wustl.edu)
+
+20/20
+results for different k
+nice future work
+point out problem with averaging lat-long data!
+_________________________
+documentation:
+(grader: Marion)
+(email: m.neumann@wustl.edu)
+
+25/25
+
+_________________________
+total:
+
+100/100

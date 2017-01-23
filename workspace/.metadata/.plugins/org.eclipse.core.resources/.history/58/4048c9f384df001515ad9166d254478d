@@ -1,0 +1,126 @@
+package stubs;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IOUtils;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.SequenceFile;
+import org.apache.hadoop.io.SequenceFile.CompressionType;
+import org.apache.hadoop.io.SequenceFile.Writer;
+import org.apache.hadoop.io.SequenceFile.Writer.Option;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.io.compress.DefaultCodec;
+import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+
+import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.util.Tool;
+import org.apache.hadoop.util.ToolRunner;
+
+@SuppressWarnings("unused")
+public class CreateSequenceFile extends Configured implements Tool {
+
+@Override
+  public int run(String[] args) throws Exception {
+
+    if (args.length != 2) {
+      System.out.printf("Usage: CreateSequenceFile <input dir> <output dir>\n");
+      return -1;
+    }
+
+    Configuration conf = getConf();
+    
+    Job job = Job.getInstance(conf);
+    job.setJarByClass(CreateSequenceFileOrigin.class);
+    job.setJobName("Create Sequence File");
+
+    /*
+     * TODO implement
+     */
+    
+    FileSystem fs = FileSystem.get(conf);
+    Path inPath = new Path(args[0]);
+    Path outPath = new Path(args[1]);
+    
+	FileInputFormat.setInputPaths(job,  inPath);
+	FileOutputFormat.setOutputPath(job, outPath);
+	
+	job.setMapperClass(SEQMapper.class);
+	job.setOutputKeyClass(Text.class);
+	job.setOutputValueClass(Text.class);
+//	job.setNumReduceTasks(0);
+	
+	job.setOutputFormatClass(SequenceFileOutputFormat.class);
+
+//	FileOutputFormat.setCompressOutput(job, false);
+	
+//	SequenceFileOutputFormat.setOutputCompressionType(job, CompressionType.NONE);
+	
+	//********************************************************
+    
+    //Path path = new Path("uncompressedsf");
+    
+//    LongWritable key = new LongWritable();
+//    Text value = new Text();
+//    Option compressOption = Writer.compression(
+//    		CompressionType.NONE, 
+//    		new DefaultCodec());
+//    
+//    SequenceFile.Writer writer = null;
+//    
+//    try {
+//    	writer = SequenceFile.createWriter (conf
+//    			, SequenceFile.Writer.file(outPath)
+//    			, SequenceFile.Writer.keyClass(key.getClass())
+//    			, SequenceFile.Writer.valueClass(value.getClass())
+//    			, compressOption
+//    			);
+//    	
+//    	BufferedReader br = new BufferedReader (new InputStreamReader(fs.open(inPath)));
+//    	long lineNum = 0;
+//    	String line;
+//    	
+//    	line = br.readLine();
+//    	
+//    	while (line != null) {
+//    		key.set(lineNum++);
+//    		value.set(line);
+//    		writer.append(key, value);
+//    		line = br.readLine();
+//    	}
+//    }
+//    finally {
+//    	IOUtils.closeStream(writer);
+//    }
+	//********************************************************
+    
+    boolean success = job.waitForCompletion(true);
+    return success ? 0 : 1;
+  }
+
+  public static void main(String[] args) throws Exception {
+    int exitCode = ToolRunner.run(new Configuration(), new CreateSequenceFileOrigin(), args);
+    System.exit(exitCode);
+  }
+  
+  private static class SEQMapper extends Mapper<LongWritable, Text, Text, Text> {
+	  private static Text seqkey = new Text();
+	  private static int line_num = 0;
+	  
+	  public void map(LongWritable key, Text value, Context context) 
+	  throws IOException, InterruptedException{
+		  
+		  seqkey.set(key.get() + " | " + line_num++);
+		  context.write(seqkey, value);
+	  }
+  }
+  
+}

@@ -1,0 +1,28 @@
+grading notes for wanren:
+
+If you have questions please contact me:
+Kunyao Liu
+kunyao.liu@wustl.edu
+
+Prob 1:
+(a) 6/7
+not infinity, consider only text provided in the problem, not in larger context
+(b) 6/7
+same with a
+(c) 7/7
+diff btw ab   0/4
+19/25
+
+Prob 2:
+25/25
+
+Prob 3:
+25/25
+
+Prob 4:
+25/25
+
+Total: 94/100
+
+Extra Credit (hw1 review):
+5/5

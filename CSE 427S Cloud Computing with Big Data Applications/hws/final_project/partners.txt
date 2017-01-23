@@ -1,0 +1,9 @@
+sun.yi
+wu.lei
+wanren
+
+
+
+% this file needs to include up to 3 wustlkeys in the first three lines (one line per wustlkey).
+% first line/wustlkey is the repository, where the all solutions are located!!
+% This exact same file needs to be in both partners repositories (indicating that partnerships are mutually accepted)!

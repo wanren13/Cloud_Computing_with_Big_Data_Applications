@@ -1,0 +1,1 @@
+It is the last homework finally. The program for the homework is simple. I feel that it is not necessary to use Github skeleton code to write the program. We should be able to write by our own. The work of showing normalized cosine similarity measure is acctually Peason correlation is a little bit boring, since they are actually the same.

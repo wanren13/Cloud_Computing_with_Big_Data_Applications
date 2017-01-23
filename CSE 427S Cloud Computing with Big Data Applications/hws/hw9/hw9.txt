@@ -1,0 +1,106 @@
+Add your answers to the following Problems to this file. 
+Don't forget to commit your answers when you are done!
+
+Name:
+Ren Wan
+Ming Cheng
+________________________________________________
+Problem 1 (a)
+
+Top 15 Popular movies:
+
+103701.0	Ferris Bueller's Day Off
+95216.0	Rain Man
+94398.0	Seven
+92377.0	The Godfather
+92029.0	The Incredibles
+90891.0	Pretty Woman
+88670.0	As Good as It Gets
+82862.0	The Italian Job
+81889.0	Terminator 2: Extreme Edition
+80580.0	Good Morning
+78936.0	When Harry Met Sally
+78892.0	National Lampoon's Vacation
+76587.0	Beverly Hills Cop
+76473.0	Office Space
+75145.0	Air Force One
+
+
+MapReduce Jobs for Top N Movie List:
+# Job1:
+AggregateByKey(AggregateByKeyDriver, AggregateByKeyMapper, AggregateByKeyReducer)
+
+# Job2:
+TopN(TopNDriver, TopNMapper, TopNReducer)
+
+
+
+________________________________________________
+Problem 1 (b)
+# Average Ratings
+Above 4:     3591     12.39%    Overly Enthusiastic
+Below 2:     72       0.25%     Overly Pessimistic
+Between:     25315    87.36%
+Total  :     28978    
+
+
+# Adjusting top-N-List program:
+There are two ways to adjust the program. We need to preprocess the data to get the average rating for each user before we actually calculate the top-N-list for both ways. 
+
+## Filtering:
+One way is to simply remove those enthusiastic/pessimistic rater from user list. It is not hard to identify overly enthusiastic and overly pessimistic raters by average rating. A rater is likely to be an over enthusiastic/pessimistic rater if he/she rated more than once and his/her average rating is above 4 or below 2. Once we have the list of overly enthusiastic and overly pessimistic raters, we could filter out the ratings rated by those raters in our AggregateByKeyMapper.
+
+## Normalization:
+Normalization is another way to cope with the problem of top-N-list program. There will not be overly enthusiastic and overly pessimistic raters once the rating of each rater is normalized.
+
+
+MapReduce Jobs for average rating per user:
+# Job1:
+AvgRatingPerUser(AvgRatingPerUserDriver, AvgRatingPerUserMapper, AvgRatingPerUserReducer)
+
+# Job2:
+CountHighLow(CountHighLowDriver, CountHighLowMapper, CountHighLowReducer)
+
+________________________________________________
+________________________________________________
+Problem 2 (a)
+
+USE a formula editor for this part or scan your hand-written derivation!!
+
+
+________________________________________________
+Problem 2 (b)
+
+# Qulity perspective:
+
+In normalization, for each of the users subtract their average rating for items from their rating for the item. This normalization adjusts the estimate in the case that the user tends to give very high or very low ratings, or a large fraction of the similar users who rated this item are users who tend to rate very high or very low which removes bias (enthusiastic versus overly critical users). The normalization brings cosine similarity to Pearson correlation which improves cosine similarity measure.
+
+
+# Implementation perspective:
+Using the normalization, we need the average rating of each user, that is, pre-processing is needed to calculate the average rating of each user. When the number of user is large, it takes time to get the pre-processing job done.
+
+
+
+________________________________________________
+Problem 2 (c)
+
+# The problem of Jaccard similarity:
+Jaccard similarity doesn’t take into account the difference of ratings between the vectors. In this case, if two users watch the same films but have completely opposite opinions on them, then they are considered to be similar any way according to Jaccard similarity.
+
+# Pre-processing:
+Calculate the average rating of each user, the rating lower than the average is given to -1 and the rating higher than the average is given to 1, the item has no rating is given 0.
+
+The nominator becomes the number of items with same label, the denominator is the number of items with labels which is not 0.
+
+Example:
+         itemA    itemB    itemC    Average
+user1:   1(-1)    4(1)     1(-1)    2
+user2:   4(1)     1(-1)    5(1)     3.3
+
+Before Preprocessing:
+Jaccard similarity = 3/3 = 100%;
+
+After Preprocessing:
+Jaccard similarity = 0/3 = 0%
+
+We can see that the result of second approach makes much more sense in above example.

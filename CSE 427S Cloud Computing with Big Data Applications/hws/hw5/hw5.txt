@@ -1,0 +1,114 @@
+Add your answers to Problem 1 to this file. 
+Don't forget to commit your answers when you are done!
+
+
+________________________________________________
+Problem 1(a)
+testlog only contains first 5000 lines of the weblog.
+fraction = 5000 / 4477843 = 0.0011166090459
+
+
+
+________________________________________________
+Problem 1(b)
+Mapper input:
+10.223.157.186 - - [15/Jul/2009:21:24:17 -0700] "GET /assets/img/media.jpg HTTP/1.1" 200 110997
+10.223.157.186 - - [15/Jul/2009:21:24:18 -0700] "GET /assets/img/pdf-icon.gif HTTP/1.1" 200 228
+10.216.113.172 - - [16/Jul/2009:02:51:28 -0700] "GET / HTTP/1.1" 200 7616
+10.216.113.172 - - [16/Jul/2009:02:51:29 -0700] "GET /assets/js/lowpro.js HTTP/1 .1" 200 10469
+10.216.113.172 - - [16/Jul/2009:02:51:29 -0700] "GET /assets/css/reset.css HTTP/1.1" 200 1014
+
+Mapper output:
+10.223.157.186	1
+10.223.157.186	1
+10.216.113.172	1
+10.216.113.172	1
+10.216.113.172	1
+
+Reducer input:
+10.223.157.186	[1, 1]
+10.216.113.172	[1, 1, 1]
+
+Reducer output:
+10.223.157.186	2
+10.216.113.172	3
+
+Reducer is doing summation. Same as word count.
+
+________________________________________________
+Problem 1(e)
+
+(i)
+# Input and output:
+## Local:
+   Local files system
+## Cluster: 
+   HDFS
+
+# Print statements:
+## Local:
+   Stdout & Stderr prints statements to Eclipse console or Terminal
+## Cluster:
+   Output not appear on console. They are visible via Web UI.
+
+# Job management:
+  ## Local:
+     Jobs run in LocalJobRunner mode. 
+     To use LocalJobRunner, either set configurations in driver or set options on the command line when using ToolRunner. Eclipse runs Hadoop code in LoacalJobRunner mode
+     Job can be stopped by control + C in terminal or by clicking stop button in Eclipse.
+     Jobs status and history cannot be revealed in Web UI and Mapred job. 
+
+  ## Cluster:
+     Jobs run on cluster. 
+     Each job needs .jar file and corect commands in Terminal. 
+     A job can only be stopped by command in terminal, such as mapred job -kill (id). 
+     Can use Web UI & Mapred job to monitor job status and history.
+
+
+(ii)
+hadoop jar procLog.jar stubs.ProcessLogs -fs file:/// -jt local testlog output
+
+
+(iii)
+I prefer using Eclipse. 
+1) Easy to test and edit code.
+2) Easy to debug.
+
+
+________________________________________________
+Problem 1(f)
+There 10 different IP addresses in the testlog data.
+
+10.114.184.86   1
+10.130.195.163  21
+10.150.176.47   12
+10.153.239.5    547
+10.187.129.140  18
+10.207.190.45   21
+10.211.47.159   2860
+10.216.113.172  1196
+10.223.157.186  115
+10.82.30.199    209
+
+Total = 5000
+Every line in testlog contibutes to a count.
+
+
+
+________________________________________________
+Problem 1(g)
+We need to bear in mind that if the real Hadoop cluster has:
+1) same amount of RAM allocated to the task JVMs
+2) same version of Hadoop
+3) same version of Java
+4) same versions of third-party libraries
+
+
+
+________________________________________________
+Problem 1(h)
+10.1.100.199    35
+10.1.100.5      1
+10.99.99.58     21
+
+Because only one reducer is used.

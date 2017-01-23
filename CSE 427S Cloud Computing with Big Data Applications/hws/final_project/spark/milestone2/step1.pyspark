@@ -1,0 +1,14 @@
+# input = "file:///home/training/cse427s_sp16/final_project/spark/milestone2/data/test.txt"
+# output = "file:///home/training/cse427s_sp16/final_project/spark/milestone2/output"
+input = "file:///home/training/cse427s_sp16/final_project/spark/milestone2/data/devicestatus.txt"
+output = "/loudacre/devicestatus_etl"
+lines = sc.textFile(input, 0)
+data = lines.map(lambda line: line.split(line[19])) \
+              .filter(lambda line: len(line) == 14) \
+              .filter(lambda line: line[12] != 0 and line[13] != 0) \
+              .map(lambda line: str(line[12]) + ',' + \
+                                str(line[13]) + ',' + \
+                                str(line[0]) + ',' + \
+                                str(line[1]).split()[0] + ',' + \
+                                str(line[2])) \
+              .saveAsTextFile(output)

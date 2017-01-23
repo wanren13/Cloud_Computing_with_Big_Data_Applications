@@ -1,0 +1,35 @@
+package stubs;
+
+import java.io.IOException;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+
+/**
+ * Mapper's input are read from SequenceFile and records are: (K, V) where K is
+ * a Text V is an Integer
+ * 
+ * @author Mahmoud Parsian
+ *
+ */
+public class CountHighLowMapper extends Mapper<Text, Text, Text, IntWritable> {
+	private static IntWritable ONE = new IntWritable(1);
+	private static Text low = new Text("LOW");
+	private static Text high = new Text("HIGH");
+	private static Text normal = new Text("NORMAL");
+	private static Text total = new Text("TOTAL");
+	@Override
+	public void map(Text key, Text value, Context context) throws IOException, InterruptedException {
+		double avgRating = Double.parseDouble(value.toString());
+		if (avgRating < 2) {
+			context.write(low, ONE);
+		}
+		else if (avgRating > 4) {
+			context.write(high, ONE);
+		}
+		else {
+			context.write(normal, ONE);
+		}
+		context.write(total, ONE);
+	}
+}

@@ -1,0 +1,1 @@
+To answer the quesions of homework 2. I did some research online, including reading Wikipeida of sentiment analysis and some other stuffs. It took me some time on the homework. I am really confusing about General MapReduce names and Hadoop names. The weather is good outside, but I am feeling sad.

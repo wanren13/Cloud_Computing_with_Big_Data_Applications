@@ -1,0 +1,2 @@
+eclipse.preferences.version=1
+prefWatchExpressions=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?>\n<watchExpressions>\n<expression enabled\="true" text\="lastPhrase.get(lastPhrase.size() - 1)"/>\n<expression enabled\="true" text\="line"/>\n<expression enabled\="true" text\="line.isEmpty()"/>\n<expression enabled\="true" text\="line.lastIndexOf(lastWord)"/>\n</watchExpressions>\n

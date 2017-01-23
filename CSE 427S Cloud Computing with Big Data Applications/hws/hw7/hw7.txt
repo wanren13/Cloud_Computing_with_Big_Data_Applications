@@ -1,0 +1,69 @@
+Add your answers to the following Problems to this file. 
+Don't forget to commit your answers when you are done!
+
+Name:
+wanren
+chengming
+
+________________________________________________
+Problem 1 (a)
+hdfs dfs -cat dualcore/ad_data1/part* | head -n 100 >test_ad_data.txt
+
+
+________________________________________________
+Problem 1 (b)
+All scripts are run on a single machine without requiring Hadoop MapReduce and HDFS. This can be useful for developing and testing Pig logic. If a subset of data is used to test the code, then local mode could be faster than going through the MapReduce infrastructure.
+
+
+________________________________________________
+Problem 1 (c)
+(diskcentral.example.com,68)
+(megawave.example.com,96)
+(megasource.example.com,100)
+(salestiger.example.com,141)
+
+
+________________________________________________
+Problem 1 (d)
+(bassoonenthusiast.example.com,1246)
+(grillingtips.example.com,4800)
+(footwear.example.com,4898)
+(coffeenews.example.com,5106)
+
+-- path of file is used for running: dualcore/ad_data[12]/part*
+-- for testing on dualcore under root directory
+-- please uncomment the alternative path
+
+
+________________________________________________
+________________________________________________
+Problem 2 (b)
+(PRESENT,165606)
+(TABLET,106509)
+(DUALCORE,95124)
+
+
+-- path of file is used for running: dualcore/ad_data[12]/part*
+-- for testing on dualcore under root directory
+-- please uncomment the alternative path
+
+________________________________________________
+________________________________________________
+Problem 3 (b)
+(18243)
+
+
+-- path of file is used for running: dualcore/ad_data[12]/part*
+-- for testing on dualcore under root directory
+-- please uncomment the alternative path
+
+
+________________________________________________
+________________________________________________
+Problem 4 (b)
+(8000000)
+
+-- path of file is used for running: dualcore/ad_data[12]/part*
+-- for testing on dualcore under root directory
+-- please uncomment the alternative path
+

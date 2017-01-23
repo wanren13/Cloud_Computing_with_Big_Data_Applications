@@ -1,0 +1,125 @@
+Add your answers to Problems 1-3 to this file. 
+Don't forget to commit your answers when you are done!
+
+
+________________________________________________
+Problem 1(a)
+hadoop fs -ls shakespeare
+
+Found 4 items
+-rw-r--r--   1 training supergroup    1784616 2016-01-26 16:29 shakespeare/comedies
+-rw-r--r--   1 training supergroup    1479035 2016-01-26 16:29 shakespeare/histories
+-rw-r--r--   1 training supergroup     268140 2016-01-26 16:29 shakespeare/poems
+-rw-r--r--   1 training supergroup    1752440 2016-01-26 16:29 shakespeare/tragedies
+
+
+
+
+________________________________________________
+Problem 1(b)
+hadoop fs -cat shakespeare/poems | head -n 16
+
+
+
+	SONNETS
+
+
+
+TO THE ONLY BEGETTER OF
+THESE INSUING SONNETS
+MR. W. H. ALL HAPPINESS
+AND THAT ETERNITY
+PROMISED BY
+OUR EVER-LIVING POET WISHETH
+THE WELL-WISHING
+ADVENTURER IN
+SETTING FORTH
+
+
+
+
+
+________________________________________________
+Problem 1(c)
+Suppose Cluster Structure is:
+RA: N1, N4
+RB: N2, N5
+RC: N3, N6
+
+
+Meta-data:
+Blocks: B1, B2, B3, B4, B5
+B1: N1, N2
+B2: N2, N3
+B3: N3, N4
+B4: N4, N5
+B5: N5, N6
+
+
+
+
+________________________________________________
+________________________________________________
+Problem 2(a)
+ADRIANO	111
+Whether	41
+love	2221
+loves	203
+the	25578
+whether	79
+we	2922
+zodiac	1
+
+
+
+
+
+________________________________________________
+Problem 2(b)
+hadoop fs -cat wordcounts/part-r-00000 | wc -l
+
+29183 different words.
+
+
+
+
+________________________________________________
+Problem 2(c)
+# Filter useless words by using distributed cache. (Stop words dictionary). 
+  This not only decrease the cost of memory up but also reduce the dimension of data for sentiment analysis.
+# Modify regular expression for n-gram model.
+  In addition to counting unigram, record bigrams or even trigram. A model stores more meaningful context with larger n after all.
+# Use combiner to avoid large amounts of intermediate data produced by Mappers and speed up data transfer to Reducers.
+
+
+
+________________________________________________
+Problem 2(d)
+In word-count example, since InputFormat is not specified, the TextInputFormat and LineRecordReader will be used by default.
+
+# Input: 
+InputSplit of the original file.
+# Output:
+Key-value pairs for Mapper
+key: byte offset of the line with the file (block)
+value: line (sequence of characters termintated by \n)
+
+
+
+
+
+________________________________________________
+________________________________________________
+Problem 3(a)
+
+Yes, significant skew is expected by various reducers. The reason is that there is often significant variation in the lengths of the value lists for different keys, so different reducers take different amounts of time.
+For example, in problem 2(a), the ratio of word count of "the" and "zodiac" is 25578:1. This ratio will be much greater in text data such as a copy of the English Wikipedia. The reducer will take much less time to process "zodiac" than "the".
+
+
+
+________________________________________________
+Problem 3(b)
+No, we don't expect the skew in the Reduce Tasks to be significant if we assign the reducers to 10 tasks at random. We can expect that there will be some averaging of the total time required by the different Reduce tasks.
+
+1) However, if we instead use 10,000 reduce tasks, every reduce task will be only assigned a few jobs. If a reduce task has jobs with very long value lists, it will spend much more time than others. Skew is significant in the Reduce tasks. 
+2) In terms of the computation time of compute nodes, since the number of Reduce tasks are much more than the number of compute nodes, long reduce tasks might occupy a compute node fully, while several shorter reduce tasks might run sequentially at a single compute node. There will not be significant skew in compute nodes.

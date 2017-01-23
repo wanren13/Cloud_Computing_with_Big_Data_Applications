@@ -1,0 +1,90 @@
+Add your answers to Problems 1 and 3 to this file. 
+Don't forget to commit your answers when you are done!
+
+
+________________________________________________
+Problem 1(a)
+Mapper output:
+N	2
+n	3
+i	2
+d	10
+n	3
+t	3
+b	4
+t	4
+
+Reducer input
+N	[2]
+b	[4]
+d	[10]
+i	[2]
+n	[3, 3]
+t	[3, 4]
+
+
+
+
+________________________________________________
+Problem 1(c)
+A	3.891394576646375
+W	4.464014043300176
+a	3.0776554817818575
+t	3.733261651336357
+z	4.672727272727273
+
+
+
+
+________________________________________________
+________________________________________________
+Problem 3(a)
+No
+
+
+
+
+________________________________________________
+Problem 3(b)
+The answer is NO if we want to perform case sensitive processing, since the configuration parameter caseSensitve default value is true.
+To perform case insensitive processing, the option "-DcaseSensitive=false" must be added to command. 
+
+
+
+________________________________________________
+Problem 3(c)
+hadoop jar caseAvg.jar stubs.AvgWordLength -DcaseSensitive=false shakespeare avgCaseFalse
+
+Yes, the order of command line inputs do matter. If we specify the parameters after the output directory, the parameters will be considered as arguments of Java program instead of arguments of Hadoop. Because java program only accepts 2 arguments, an error message will be shown.
+
+a       3.275899648342265
+w       4.373096283946263
+z       5.053333333333334
+
+
+________________________________________________
+Problem 3(d)
+#1 In AvgWordLength.java:
+add:
+Configuration conf = new Configuration();
+conf.addResource(new Path("./config.xml"));
+change:
+Job job = new Job(conf);
+
+#2 Create a config.xml in the same location as .jar file:
+<?xml version="1.0"?>
+<configuration>
+        <property>
+                <name>caseSensitive</name>
+                <value>false</value>
+        </property>
+</configuration>
+
+#3 In LetterMapper.java, it is same as Tool runner program. Use setup function to get the value of caseSensitive for each mapper:
+public void setup(Context context) {
+	Configuration conf = context.getConfiguration();
+	caseSensitive = conf.getBoolean("caseSensitive", true);
+}
+
+I prefer to use "-D" option pass a parameter in terminal, it's much easier than modifying the .xml file. Also, I don't have to care about the location of the .xml file.
+

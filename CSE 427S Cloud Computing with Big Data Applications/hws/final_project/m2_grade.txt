@@ -1,0 +1,12 @@
+If you have questions please contact me:
+Xuting Tang
+tang.xuting@wustl.edu
+
+5% scripts for Problem 2, Step 1 are submitted and run (or at least look promising)
+5
+
+5% scripts were actually run --> verify according to devicestatus.png screen-shot
+5
+
+5% Problem 2, Step 2 was performed --> verify by checking step2.png
+5

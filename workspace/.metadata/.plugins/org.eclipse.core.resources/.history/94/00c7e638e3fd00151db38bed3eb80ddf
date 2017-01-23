@@ -1,0 +1,44 @@
+package stubs;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.SortedMap;
+import java.util.TreeMap;
+//import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+
+import org.apache.hadoop.conf.Configurable;
+import org.apache.hadoop.conf.Configuration;
+//import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.io.DoubleWritable;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.NullWritable;
+//import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
+/**
+ * Reducer's input are local top N from all mappers. We have a single reducer,
+ * which creates the final top N.
+ * 
+ * @author Mahmoud Parsian
+ *
+ */
+public class CountHighLowReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
+	private IntWritable value = new IntWritable();
+
+	@Override
+	public void reduce(Text key, Iterable<IntWritable> values, Context context)
+			throws IOException, InterruptedException {
+		int sum = 0;
+		for (IntWritable value : values) {
+			sum += value.get();
+		}
+		value.set(sum);
+		context.write(key, value);
+	}
+}

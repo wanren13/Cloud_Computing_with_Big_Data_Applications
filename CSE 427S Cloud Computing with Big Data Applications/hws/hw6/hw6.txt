@@ -1,0 +1,128 @@
+Add your answers to the following Problems to this file. 
+Don't forget to commit your answers when you are done!
+
+Name:
+
+________________________________________________
+Problem 1 (a)
+Signature in this file:
+Type : SEQ 
+Key  : org.apache.hadoop.io.Text
+Value: org.apache.hadoop.io.Text
+
+8 files were created.
+
+The number of output files depends on the number of input files, the size of each files, the size of the block and the number of the reducer used. Because there is only one input file and no reducer (map only job) for the problem 1a, the size of weblog/access_log (481.5 mb) and the size of block (default value 64 mb) decide the number of output files.
+
+The number of output files is: 
+  size_of_input_files / size_of_block 
+= 481.5 / 64 
+= 7.5 
+= 8 files
+
+Bonus:
+# Command for running program using HDFS:
+hadoop jar SequenceFileWriter.jar stubs.SequenceFileWriter testlog sfout
+# Command for running program using local file system:
+hadoop jar SequenceFileWriter.jar stubs.SequenceFileWriter -fs file:/// -jt local testlog sfout
+
+A sequence file named result.seq will be created in sfout folder once the job is done.
+
+
+________________________________________________
+Problem 1 (b)
+Signature in this file:
+Type : SEQ 
+Key  : org.apache.hadoop.io.Text
+Value: org.apache.hadoop.io.Text
+Codec: org.apache.hadoop.io.compress.SnappyCodec
+
+Difference:
+# Size:
+## Total size of compressed is much smaller: 
+16.9 + 17.8 + 18.1 + 18.1 + 18.7 + 18.7 + 18.9 + 9.9 = 137.1 mb
+## Total size of uncompressed sequence file is big: 
+77.9 + 78.3 + 78.5 + 78.2 + 78.3 + 78.5 + 78.4 + 41.1 = 589.2 mb
+
+# Content:
+## Compressed  : keys and values are compressed, human cannot read
+## Uncompressed: keys and values are not compressed, human can read
+
+# Signature:
+## Compressed  : With codec type 
+## Uncompressed: Without codec type
+
+Achieved compression ratio: 589.2/137.1 = 4.29
+
+________________________________________________
+Problem 1 (c)
+Besides original content of access_log, it also has a custom key at the beginning of each line. No information about key and value is provided at the begining of the file. Since custom keys are used, the output file are sorted by key, the order of content is different from the original log file.
+
+
+________________________________________________
+Problem 1 (d)
+hadoop jar createSEQCompressedPara.jar stubs.CreateSequenceFileParameter -Dmapred.output.compress=true -Dmapred.output.compression.type=BLOCK -Dmapred.output.compression.codec=org.apache.hadoop.io.compress.SnappyCodec weblog compressedsfPara
+
+
+
+________________________________________________
+________________________________________________
+Problem 2 (a)
+KeyValueTextInputFormat can be used to read this data, because the separator for line number and value is a tab character.
+
+Code for retriving the file name:
+String filename = ((FileSplit) context.getInputSplit()).getPath().getName();
+
+
+________________________________________________
+Problem 2 (c)
+have	Hamlet@282
+heaven	Hamlet@282
+and	Hamlet@282
+earth	Hamlet@282
+together	Hamlet@282
+there	Hamlet@133
+are	Hamlet@133
+more	Hamlet@133
+things	Hamlet@133
+in	Hamlet@133
+heaven	Hamlet@133
+and	Hamlet@133
+earth	Hamlet@133
+
+
+________________________________________________
+________________________________________________
+Problem 3 (b)
+
+Quote from histories(182-187):	
+182	Whilst I, by looking on the praise of him,
+183	See riot and dishonour stain the brow
+184	Of my young Harry. O that it could be proved
+185	That some night-tripping fairy had exchanged
+186	In cradle-clothes our children where they lay,
+187	And call'd mine Percy, his Plantagenet!
+
+# Problem 1:
+By doing merely word co-occurrence of words directly next to each other we can get:
+I,by @182
+Harry,O @184
+Percy,his @187
+These words are either seperated by a comma or a period. These words co-occurrences do not have any meaning.
+
+# Solution:
+Consider splitting sentences into phrase:
+ ## For each line, we could preprocess the input and split the string into phrases:
+ 1) Whilst I                2) by looking on the praise of him @182
+ 1) Of my young Harry       2) O that it could be proved @184
+ 1) And call'd mine Percy   2) his Plantagenet!
+ Look for word co-occurrence of words in each phrases after splitting.
+
+# Problem 2:
+Some sentences are unintentionally splitted by map() function.
+See riot and dishonour stain the brow of my young Harry. @183, 184
+O that it could be proved that some night-tripping fairy had exchanged in cradle-clothes our children where they lay @184, 185, 186
+
+# Solution:
+Consider word co-occurrence between lines:
+Modify the Mapper class to concatenate the last word from the last execution of map() function (if there is one) with the first word of the current map() function. If the last character of the last execution of map() function is a punctuation, set last word to null.

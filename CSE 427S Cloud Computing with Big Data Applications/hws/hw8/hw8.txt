@@ -1,0 +1,205 @@
+Add your answers to the following Problems to this file. 
+Don't forget to commit your answers when you are done!
+
+Name:
+wanren
+chengming
+________________________________________________
+Problem 1 (a)
+Needed Dataset(s) and needed field(s):
+# orders
+## order_id:int
+## order_dtm:chararray
+
+
+########################################################
+# I wrote two bash scripts to generate sample data     #
+# Please check sample_pig.sh and sample.sh for details #
+########################################################
+
+# Using pig:
+
+## Load file from HDFS:
+   ./sample_pig.sh /dualcore/orders/part-m-00003 sample_output_hdfs 0.05 1
+
+## Load file from Local FS:
+   ./sample_pig.sh orders/part-m-00003 sample_output_local 0.05 0
+
+
+# Not using pig:
+
+## Load file from HDFS:
+./sample.sh /dualcore/oders/part-m-00003 output.txt 0.05 1
+
+## Load file from Local FS:
+./sample.sh part-m-00003 output.txt 0.05 0
+
+
+
+
+
+
+
+________________________________________________
+Problem 1 (c)
+Yes, the data suggest that the advertising campaign we started in May led to a substantial increase in orders.
+
+counted: {month: chararray,count: long}
+(02,76170)
+(03,84549)
+(04,87853)
+(05,115038)
+
+
+________________________________________________
+________________________________________________
+Problem 2 (a)
+Needed Dataset(s) and needed field(s):
+# orders
+## order_id:int
+## order_dtm:chararray
+
+# order_details
+## order_id:int
+## prod_id:int
+
+The first thing is create a subset of datasets. Make sure the subset works for the script.
+
+
+________________________________________________
+Problem 2 (b)
+When: As early as possible.
+Why : This makes our script more efficient.
+
+In count_tablet_orders_by_period.pig example, the LOAD operation is followed by a JOIN operation. This would produce lots of data we ultimatedly discard. We should always filter unwanted data as early as possible, so that we can produce a joined new relation as small as possible. 
+
+
+________________________________________________
+Problem 2 (d)
+Yes, the data shows an increase in sales of the advertised product corresponding to the month in which Dualcore's campaign was active.
+
+# schema: 
+counted: {month: chararray,count: long}
+
+# result:
+(02,3598)
+(03,3904)
+(04,4134)
+(05,49514)
+
+
+________________________________________________
+________________________________________________
+Problem 3 (a)
+Needed Dataset(s) and needed field(s):
+# orders
+## order_id:int
+## cust_id:int
+## order_dtm:chararray
+
+# order_details
+## order_id:int
+## prod_id:int
+
+# products
+## prod_id:int
+## price:int
+
+________________________________________________
+Problem 3 (c)
+# Commands:
+fs -getmerge /dualcore/platinum platinum.txt
+fs -getmerge /dualcore/gold gold.txt
+fs -getmerge /dualcore/silver silver.txt
+sh wc -l platinum.txt gold.txt silver.txt
+
+# Result:
+  109 platinum.txt
+  331 gold.txt
+  736 silver.txt
+ 1176 total
+
+
+
+
+________________________________________________
+________________________________________________
+Problem 4 (a)
+# Command:
+find $ADIR/data/cscalls -name *.mp3 > call_list.txt
+
+
+________________________________________________
+Problem 4 (c)
+Add SHIP option to DEFINE statement:
+DEFINE tagreader `readtags.py` SHIP('readtags.py');
+
+The ship option sends streaming binary and supporting files, if any, from the client node to the compute nodes. 
+
+________________________________________________
+Problem 4 (d)
+We can use -dryrun to create substituted Pig script and check if the parameter is substituted correctly.
+
+# Command:
+pig -p DATE='2013-04' -dryrun extract_metadata.pig
+
+# Top three call categories in April:
+(BILLING,16)
+(TECH_SUPPORT,14)
+(STORE_LOCATIONS,6)
+
+
+________________________________________________
+Problem 4 (e)
+# Top three call categories in May:
+(SHIPPING_DELAY,116)
+(TECH_SUPPORT,24)
+(STORE_LOCATIONS,24)
+
+SHIPPING_DELAY shows a significant increase.
+
+________________________________________________
+________________________________________________
+Problem 5 (a)
+INPUT:  /dualcore/orders 
+            cust_id:int
+            fname:chararray
+            lname:chararray
+            address:chararray
+            city:chararray
+            state:chararray
+            zipcode:chararray
+
+        /dualcore/customers
+            zip:chararray
+            lat:double
+            lon:double
+
+        /dualcore/distribution/latlon.tsv 
+            zip:chararray
+            lat:double
+            lon:double
+
+OUTPUT: /dualcore/distribution/cust_locations/
+            zip:chararray
+            lat:double
+            lon:double
+
+Line#       What does it do:
+
+1, 5, 1     Load data from HDFS
+19:         Include only records from during the ad campaign using filter statement to compare substring of order_dtm with date string.
+24          Exclude customers who live within two-day delivery area by filtering states.
+38          Join orders table with customer table to find out all customer who ordered recently.
+42          Only keep cust_id and zip from old relation. Use DISTINCT statement to remove duplicates(A customer might make more than one order).
+48          Join uniq_cust table with latlon table to find out latitude and longitude of each customer who ordered recently.
+51          Rename uniq_cust::zip and eliminate redundant column (latlon::zip).
+53          Store ZIP, latitude, and longitude in HDFS for further analysis
+
+________________________________________________
+Problem 5 (d)
+# Three lowest average mileage to Dualcore customers: 
+{zip: chararray,avg_dist: double}
+(63139,423.0194510291977)
+(78237,955.8300496917795)
+(02118,1059.337959146699)

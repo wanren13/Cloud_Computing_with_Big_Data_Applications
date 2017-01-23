@@ -1,0 +1,42 @@
+2016-02-17 02:15:19,413 WARN org.apache.hadoop.conf.Configuration: session.id is deprecated. Instead, use dfs.metrics.session-id
+2016-02-17 02:15:19,419 INFO org.apache.hadoop.metrics.jvm.JvmMetrics: Initializing JVM Metrics with processName=JobTracker, sessionId=
+2016-02-17 02:15:19,623 WARN org.apache.hadoop.mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+2016-02-17 02:15:19,637 WARN org.apache.hadoop.mapred.JobClient: No job jar file set.  User classes may not be found. See JobConf(Class) or JobConf#setJar(String).
+2016-02-17 02:15:19,680 INFO org.apache.hadoop.mapreduce.lib.input.FileInputFormat: Total input paths to process : 1
+2016-02-17 02:15:20,421 INFO org.apache.hadoop.mapred.JobClient: Running job: job_local1997675296_0001
+2016-02-17 02:15:20,429 INFO org.apache.hadoop.mapred.LocalJobRunner: OutputCommitter set in config null
+2016-02-17 02:15:20,446 INFO org.apache.hadoop.mapred.LocalJobRunner: OutputCommitter is org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter
+2016-02-17 02:15:20,548 INFO org.apache.hadoop.mapred.LocalJobRunner: Waiting for map tasks
+2016-02-17 02:15:20,550 INFO org.apache.hadoop.mapred.LocalJobRunner: Starting task: attempt_local1997675296_0001_m_000000_0
+2016-02-17 02:15:20,623 WARN mapreduce.Counters: Group org.apache.hadoop.mapred.Task$Counter is deprecated. Use org.apache.hadoop.mapreduce.TaskCounter instead
+2016-02-17 02:15:20,666 INFO org.apache.hadoop.util.ProcessTree: setsid exited with exit code 0
+2016-02-17 02:15:20,712 INFO org.apache.hadoop.mapred.Task:  Using ResourceCalculatorPlugin : org.apache.hadoop.util.LinuxResourceCalculatorPlugin@18330bf
+2016-02-17 02:15:20,715 INFO org.apache.hadoop.mapred.MapTask: Processing split: file:/home/training/training_materials/developer/data/shakespeare/poems:0+268140
+2016-02-17 02:15:20,732 INFO org.apache.hadoop.mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+2016-02-17 02:15:20,734 INFO org.apache.hadoop.mapred.MapTask: io.sort.mb = 100
+2016-02-17 02:15:20,824 INFO org.apache.hadoop.mapred.MapTask: data buffer = 79691776/99614720
+2016-02-17 02:15:20,824 INFO org.apache.hadoop.mapred.MapTask: record buffer = 262144/327680
+2016-02-17 02:15:20,852 INFO org.apache.hadoop.mapred.LocalJobRunner: Map task executor complete.
+2016-02-17 02:15:20,853 WARN org.apache.hadoop.mapred.LocalJobRunner: job_local1997675296_0001
+java.lang.Exception: java.io.IOException: Illegal partition for sonnets (2)
+	at org.apache.hadoop.mapred.LocalJobRunner$Job.run(LocalJobRunner.java:404)
+Caused by: java.io.IOException: Illegal partition for sonnets (2)
+	at org.apache.hadoop.mapred.MapTask$MapOutputBuffer.collect(MapTask.java:950)
+	at org.apache.hadoop.mapred.MapTask$NewOutputCollector.write(MapTask.java:602)
+	at org.apache.hadoop.mapreduce.task.TaskInputOutputContextImpl.write(TaskInputOutputContextImpl.java:85)
+	at org.apache.hadoop.mapreduce.lib.map.WrappedMapper$Context.write(WrappedMapper.java:106)
+	at stubs.WordMapper.map(WordMapper.java:53)
+	at stubs.WordMapper.map(WordMapper.java:1)
+	at org.apache.hadoop.mapreduce.Mapper.run(Mapper.java:140)
+	at org.apache.hadoop.mapred.MapTask.runNewMapper(MapTask.java:673)
+	at org.apache.hadoop.mapred.MapTask.run(MapTask.java:331)
+	at org.apache.hadoop.mapred.LocalJobRunner$Job$MapTaskRunnable.run(LocalJobRunner.java:266)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:441)
+	at java.util.concurrent.FutureTask$Sync.innerRun(FutureTask.java:303)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:138)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.runTask(ThreadPoolExecutor.java:886)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:908)
+	at java.lang.Thread.run(Thread.java:662)
+2016-02-17 02:15:21,429 INFO org.apache.hadoop.mapred.JobClient:  map 0% reduce 0%
+2016-02-17 02:15:21,436 INFO org.apache.hadoop.mapred.JobClient: Job complete: job_local1997675296_0001
+2016-02-17 02:15:21,441 INFO org.apache.hadoop.mapred.JobClient: Counters: 0
